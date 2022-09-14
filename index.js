@@ -1,14 +1,8 @@
 const express = require("express");
-
 const Contenedor = require("./contenedor.js");
-
 const productos = new Contenedor("productos.txt");
-
 const app = express();
-
 const PORT = 8080;
-
-const fs = require("fs");
 
 const server = app.listen(PORT, () => {
   console.log(
@@ -29,6 +23,18 @@ app.get("/productos", (req, res) => {
       (item) =>
         (card += `<h1>Nombre: ${item.title}</h1>/n <h2>Precio: ${item.price}</h2>/n <img src"${item.thumbnail}">`)
     );
+    res.send(card);
+  };
+  ejecutar();
+});
+
+app.get("/random", (req, res) => {
+  const ejecutar = async () => {
+    const arrayProductos = await productos.getAll();
+    let numero = Math.floor(Math.random() * arrayProductos.length);
+    let random = [];
+    arrayProductos.map((item, index) => index === numero && random.push(item));
+    let card = `<h1>Nombre: ${random[0].title}</h1>/n <h2>Precio: ${random[0].price}</h2>/n <img src="${productoRandom[0].thumbnail}">`;
     res.send(card);
   };
   ejecutar();
