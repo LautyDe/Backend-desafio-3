@@ -34,7 +34,7 @@ app.get("/random", (req, res) => {
     let numero = Math.floor(Math.random() * arrayProductos.length);
     let random = [];
     arrayProductos.map((item, index) => index === numero && random.push(item));
-    let card = `<h1>Nombre: ${random[0].title}</h1>/n <h2>Precio: ${random[0].price}</h2>/n <img src="${productoRandom[0].thumbnail}">`;
+    let card = `<h1>Nombre: ${random[0].title}</h1>/n <h2>Precio: ${random[0].price}</h2>/n <img src="${random[0].thumbnail}">`;
     res.send(card);
   };
   ejecutar();
