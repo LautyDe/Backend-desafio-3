@@ -1,4 +1,4 @@
-const Contenedor = require("./desafio.js");
+const Contenedor = require("./contenedor.js");
 const productos = new Contenedor("productos.txt");
 
 const producto1 = {

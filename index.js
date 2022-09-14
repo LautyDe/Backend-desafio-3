@@ -6,6 +6,30 @@ const PORT = 8080;
 
 const fs = require("fs");
 
+const productos = [
+  {
+    title: "Silla Gamer",
+    price: 60000,
+    thumbnail:
+      "https://d3ugyf2ht6aenh.cloudfront.net/stores/001/720/526/products/diseno-sin-titulo-5121-bd311cff4d158548d516372654110148-1024-1024.jpg",
+    id: 1,
+  },
+  {
+    title: "Joystick PS5",
+    price: 25000,
+    thumbnail:
+      "https://images.fravega.com/f1000/a23c2e9cbe114eca833fc5f7288457fc.jpg",
+    id: 2,
+  },
+  {
+    title: "Auriculares PS5",
+    price: 42000,
+    thumbnail:
+      "https://arsonyb2c.vtexassets.com/arquivos/ids/348062/PS5_WHS_Pshot_A.jpg?v=637363806123470000",
+    id: 3,
+  },
+];
+
 const server = app.listen(PORT, () => {
   console.log(
     `Servidor ehttp escuchando en el puerto ${server.address().port}`
@@ -17,165 +41,27 @@ app.get("/", (req, res) => {
   res.send({ mensaje: "Hola mundo!" });
 });
 
-app.get("/", (req, res) => {
-  res.send({ mensaje: "Hola mundo!" });
+app.get("/productos", (req, res) => {
+  res.send("holaa");
 });
 
-class Contenedor {
-  constructor(archivo) {
-    this.archivo = archivo;
-  }
+const producto1 = {
+  title: "Silla Gamer",
+  price: 60000,
+  thumbnail:
+    "https://d3ugyf2ht6aenh.cloudfront.net/stores/001/720/526/products/diseno-sin-titulo-5121-bd311cff4d158548d516372654110148-1024-1024.jpg",
+};
 
-  /* escribir en el archivo */
-  async writeFile(archivo, contenido) {
-    try {
-      await fs.writeFileSync(archivo, JSON.stringify(contenido, null, 2));
-    } catch (error) {
-      console.log(`Ocurrio un error:`, error.message);
-    }
-  }
+const producto2 = {
+  title: "Joystick PS5",
+  price: 25000,
+  thumbnail:
+    "https://images.fravega.com/f1000/a23c2e9cbe114eca833fc5f7288457fc.jpg",
+};
 
-  /* Leer el archivo */
-  async readFile(archivo) {
-    try {
-      const data = await fs.readFileSync(archivo);
-      return JSON.parse(data);
-    } catch (error) {
-      console.log(`Ocurrio un error:`, error.message);
-    }
-  }
-
-  /* Buscar si existe el archivo */
-  exists(archivo) {
-    try {
-      if (!fs.existsSync(archivo)) {
-        throw new Error("No se encontro el archivo.");
-      } else {
-        return true;
-      }
-    } catch (error) {
-      console.log(`Ocurrio un error:`, error.message);
-    }
-  }
-
-  /* guardar nuevo producto en archivo */
-
-  async save(producto) {
-    try {
-      /* verifico si existe archivo y sino creo uno nuevo */
-      if (!this.exists(this.archivo)) {
-        console.log(
-          `No se encontro el archivo ${this.archivo}\n se procede a crear uno nuevo`
-        );
-        let arrayProductos = [];
-
-        producto["id"] = 1;
-        arrayProductos.push(producto);
-        console.log("se esta agregando el producto");
-        await this.writeFile(this.archivo, arrayProductos);
-        console.log(`Se agrego un nuevo producto con la id ${producto["id"]}`);
-        return producto["id"];
-      } else {
-        /*Si el archivo existe  primero se verifica si esta vacio*/
-        if (this.readFile(this.archivo)) {
-          const data = await this.readFile(this.archivo);
-          if (data.length === 0) {
-            /*si esta vacio  se le asigna la id 1 al primer producto*/
-            producto["id"] = 1;
-          } else {
-            /*Si tiene producto se le asigna la id siguente */
-            let ultimoId = data[data.length - 1].id;
-            producto["id"] = ultimoId + 1;
-          }
-          data.push(producto);
-          console.log("se esta agregando el producto");
-          /*se escribe el producto */
-          this.writeFile(this.archivo, data);
-          console.log(
-            `Se agrego un nuevo producto con la id ${producto["id"]}`
-          );
-          return producto["id"];
-        }
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  }
-
-  /* getById */
-
-  async getById(id) {
-    try {
-      if (this.exists(this.archivo)) {
-        const data = await this.readFile(this.archivo);
-        /* uso filter para buscar el producto con el id que queramos */
-        const dataId = data.filter((item) => item.id === id);
-        if (dataId.length === 0) {
-          throw new Error("No se encontro el ID");
-        } else {
-          console.log(`El producto cona id ${id} :\n,`, dataId);
-          return dataId;
-        }
-      }
-    } catch (error) {
-      console.log(`Ocurrio un error:`, error.message);
-    }
-  }
-
-  /* getAll */
-  async getAll() {
-    try {
-      /* verifico si existe el archivo */
-      if (this.exists(this.archivo)) {
-        console.log("Leyendo archivo...");
-        const data = await this.readFile(this.archivo);
-        /* verifico una vez que existe, si esta vacio o no */
-        if (data.length !== 0) {
-          console.log(`Contenido del archivo ${this.archivo} :\n`, data);
-        } else {
-          throw new Error(`El archivo ${this.archivo} esta vacio.`);
-        }
-      }
-    } catch (error) {
-      console.log(`Ocurrio un error:`, error.message);
-    }
-  }
-
-  /* deleteById */
-
-  async deleteById(id) {
-    try {
-      if (this.exists(this.archivo)) {
-        console.log(`Buscando producto con el id ${id}`);
-        const data = await this.readFile(this.archivo);
-        /* verifico que exista id */
-        if (data.some((item) => item.id === id)) {
-          const data = await this.readFile(this.archivo);
-          /* elimino producto */
-          const datos = data.filter((item) => item.id !== id);
-          this.writeFile(this.archivo, datos);
-          console.log(`Se borro el producto con el id ${id}`);
-        } else {
-          throw new Error(`No se encontro el produco con id ${id}`);
-        }
-      }
-    } catch (error) {
-      console.log(`Ocurrio un error:`, error.message);
-    }
-  }
-
-  /* deleteAll */
-
-  async deleteAll() {
-    try {
-      if (this.exists(this.archivo)) {
-        console.log("Borrando datos...");
-        let nuevoArrayProductos = [];
-        await this.readFile(this.archivo, nuevoArrayProductos);
-        console.log(`Se borraron todos los datos del archivo ${this.archivo}`);
-      }
-    } catch (error) {
-      console.log(`Ocurrio un error:`, error.message);
-    }
-  }
-}
+const producto3 = {
+  title: "Auriculares PS5",
+  price: 42000,
+  thumbnail:
+    "https://arsonyb2c.vtexassets.com/arquivos/ids/348062/PS5_WHS_Pshot_A.jpg?v=637363806123470000",
+};
