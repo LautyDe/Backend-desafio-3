@@ -1,8 +1,25 @@
 {
-  "dependencies": {
-    "express": "^4.18.1"
+  "name": "entrega3",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
-  "devDependencies": {
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LautyDe/Backend-desafio-3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LautyDe/Backend-desafio-3/issues"
+  },
+  "homepage": "https://github.com/LautyDe/Backend-desafio-3#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.18.1",
     "nodemon": "^2.0.19"
   }
 }
