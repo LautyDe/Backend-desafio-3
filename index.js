@@ -21,7 +21,7 @@ app.get("/productos", (req, res) => {
     let card = ``;
     arrayProductos.map(
       (item) =>
-        (card += `<h1>Nombre: ${item.title}</h1>/n <h2>Precio: ${item.price}</h2>/n <img src"${item.thumbnail}">`)
+        (card += `<h1>Nombre: ${item.title}</h1>/n <h2>Precio: ${item.price}</h2>/n <img src="${item.thumbnail}">`)
     );
     res.send(card);
   };
@@ -35,7 +35,7 @@ app.get("/random", (req, res) => {
     let random = [];
     arrayProductos.map((item, index) => index === numero && random.push(item));
     let card = `<h1>Nombre: ${random[0].title}</h1>/n <h2>Precio: ${random[0].price}</h2>/n <img src="${random[0].thumbnail}">`;
-    res.send(card);
+    res.send("card");
   };
   ejecutar();
 });
