@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
   );
 });
 
-app.get("/productos", (req, res) => {
+/* app.get("/productos", (req, res) => {
   const ejecutar = async () => {
     const arrayProductos = await productos.getAll();
     let card = ``;
@@ -42,6 +42,35 @@ app.get("/random", (req, res) => {
     res.send(
       `<h1 style="text-align: center">Producto al azar:</h1><section style="display: flex; justify-content: space-around">${card}</section>`
     );
+  };
+  ejecutar();
+}); */
+
+app.get("/productos", (req, res) => {
+  const ejecutar = async () => {
+    try {
+      const arrayProductos = await productos.getAll();
+      res.json(arrayProductos);
+    } catch (error) {
+      console.log(`Hubo un error: ${error}`);
+    }
+  };
+  ejecutar();
+});
+
+app.get("/random", (req, res) => {
+  const ejecutar = async () => {
+    try {
+      const arrayProductos = await productos.getAll();
+      let numero = Math.floor(Math.random() * arrayProductos.length);
+      let random = [];
+      arrayProductos.map(
+        (item, index) => index === numero && random.push(item)
+      );
+      res.json(random);
+    } catch (error) {
+      console.log(`Hubo un error: ${error}`);
+    }
   };
   ejecutar();
 });

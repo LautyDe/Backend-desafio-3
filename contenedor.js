@@ -110,6 +110,7 @@ class Contenedor {
         const data = await this.readFile(this.archivo);
         /* verifico una vez que existe, si esta vacio o no */
         if (data.length !== 0) {
+          console.log(`Archivo leido con exito`);
           return data;
         } else {
           throw new Error(`El archivo ${this.archivo} esta vacio.`);
